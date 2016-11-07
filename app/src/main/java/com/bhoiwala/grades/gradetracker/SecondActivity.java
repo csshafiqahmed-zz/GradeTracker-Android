@@ -3,6 +3,8 @@ package com.bhoiwala.grades.gradetracker;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
@@ -53,6 +55,9 @@ public class SecondActivity extends AppCompatActivity {
         classChosen = intent.getExtras().getString("course");
         ActionBar ab = getSupportActionBar();
         ab.setTitle(classChosen);
+//        ab.setSubtitle(classChosen);
+        ab.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#005af7")));
+
         ab.setDisplayHomeAsUpEnabled(true);
         realm = Realm.getDefaultInstance();
         FloatingActionButton addCategoryButton = (FloatingActionButton) findViewById(R.id.floatingActionButton2);

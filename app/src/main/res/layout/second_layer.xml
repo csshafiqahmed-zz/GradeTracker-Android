@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.bhoiwala.grades.gradetracker.SecondActivity"
-    tools:showIn="@layout/activity_main">
+    >
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
@@ -26,6 +26,7 @@
         app:backgroundTint="#005af7" />
 
     <ListView
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toStartOf="@+id/floatingActionButton2"
@@ -33,5 +34,36 @@
         android:layout_alignParentEnd="true"
         android:id="@+id/categoryList"
         android:layout_toLeftOf="@+id/floatingActionButton2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:weightSum="1">
+        <TextView
+            android:text="Categories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            android:layout_weight="0.60" />
+
+        <TextView
+            android:text="Weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView4"
+            android:layout_weight="0.20"
+            android:textAlignment="center" />
+
+        <TextView
+            android:text="Average"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView5"
+            android:layout_weight="0.20"
+            android:textAlignment="center" />
+    </LinearLayout>
 
 </RelativeLayout>

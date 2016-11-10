@@ -88,11 +88,13 @@ public class ThirdActivity extends AppCompatActivity {
                         String totalPossible = maxPoints.getText().toString();
                         if(!editDB) {
                             saveIndividualName(name, grade, totalPossible);
+                            toast("Assignment added");
                         }else{
                             editIndividualinDB(name, grade, totalPossible, individualNameToEdit);
+                            toast("Assignment updated");
                         }
                         forceCloseKeyboard(individualName);
-                        Toast.makeText(getApplicationContext(), "You entered: " + name, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "You entered: " + name, Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -221,6 +223,7 @@ public class ThirdActivity extends AppCompatActivity {
         realm.beginTransaction();
         individuals.deleteAllFromRealm();
         realm.commitTransaction();
+        toast("Assignment deleted");
         refreshViews();
     }
 
@@ -244,7 +247,7 @@ public class ThirdActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Individual listItem = (Individual) listView.getItemAtPosition(i);
                 String individualChosen = listItem.individualCategoryName;
-                Toast.makeText(getApplicationContext(), "You chose: " + individualChosen, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "You chose: " + individualChosen, Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -303,5 +306,8 @@ public class ThirdActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    public void toast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

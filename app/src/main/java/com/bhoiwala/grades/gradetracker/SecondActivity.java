@@ -115,7 +115,7 @@ public class SecondActivity extends AppCompatActivity {
                 Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
                 intent.putExtra("category", categoryChosen);
                 startActivity(intent);
-                Toast.makeText(getApplicationContext(), "You chose: " + categoryChosen, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "You chose: " + categoryChosen, Toast.LENGTH_SHORT).show();
             }
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -140,13 +140,15 @@ public class SecondActivity extends AppCompatActivity {
                         String weight = categoryWeight.getText().toString();
                         if(!editDB){
                             saveCategoryName(input, weight);
+                            toast("Category added");
                         }else{
                             editCategoryinDB(input, weight, categoryToEdit);
+                            toast("Category updated");
                         }
 
                         forceCloseKeyboard(categoryWeight);
                         dialog.cancel();
-                        Toast.makeText(getApplicationContext(), "You entered: " + input, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "You entered: " + input, Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -179,7 +181,7 @@ public class SecondActivity extends AppCompatActivity {
                 if (s.length() >= 1 && !exists) { // add your condition here, in your case it is checkIfNameAlreadyExists
                     goodToGo[0] = true;
                 } else {
-                    if(exists){Toast.makeText(getApplicationContext(), "Category already exists", Toast.LENGTH_SHORT).show();}
+                    if(exists){toast("Category already exists");}
                     goodToGo[0] = false;
                 }
                 if(goodToGo[0] && goodToGo2[0]){
@@ -286,6 +288,7 @@ public class SecondActivity extends AppCompatActivity {
         realm.beginTransaction();
         categories.deleteAllFromRealm();
         realm.commitTransaction();
+        toast("Category deleted");
         refreshViews();
     }
 
@@ -360,5 +363,8 @@ public class SecondActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    public void toast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

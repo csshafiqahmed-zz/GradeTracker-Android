@@ -119,11 +119,13 @@ public class MainActivity extends AppCompatActivity {
                         String input = className.getText().toString();
                         if(!editDB) {
                             saveClassName(input);
+                            toast("Course added");
                         }else{
                             editCourseinDB(input, courseToEdit);
+                            toast("Course updated");
                         }
                         forceCloseKeyboard(className);
-                        toast("You entered: " + input);
+//                        toast("You entered: " + input);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -190,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Course listItem = (Course) listView.getItemAtPosition(i);
                 String classChosen = listItem.className;
-                toast("You chose: " + classChosen);
+//                toast("You chose: " + classChosen);
 
                 Intent intent = new Intent(MainActivity.this, SecondActivity.class);
                 intent.putExtra("course", classChosen);
@@ -241,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String menuChosen = (String) menuList.getItemAtPosition(i);
-                toast(menuChosen);
+//                toast(menuChosen);
                 if(menuChosen.equals("Edit")){
                     editCourse(classToChange);
                 }else{
@@ -268,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void editCourseinDB(final String newClassName, final String courseToEdit){
-        toast("I will change to " + newClassName);
+//        toast("I will change to " + newClassName);
         Course courseWithOldName = realm.where(Course.class).equalTo("className", courseToEdit).findFirst();
         realm.beginTransaction();
         courseWithOldName.className = newClassName;
@@ -314,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
         realm.beginTransaction();
         courses.deleteAllFromRealm();
         realm.commitTransaction();
-
+        toast("Course deleted");
         refreshViews();
     }
 

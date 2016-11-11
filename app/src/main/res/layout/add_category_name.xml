@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-
+        android:maxLength="15"
         android:hint="Homeworks, Labs, Quizzes etc."
         android:singleLine="true">
         <requestFocus />
@@ -27,7 +27,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Category weight(%) : "
+        android:text="Weight : "
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
@@ -35,6 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number|numberDecimal"
+        android:hint="Enter percentage"
         android:singleLine="true">
 
     </EditText>

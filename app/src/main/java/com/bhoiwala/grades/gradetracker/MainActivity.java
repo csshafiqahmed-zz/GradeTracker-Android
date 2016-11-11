@@ -160,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                 }
             }
-
         }); // text watcher
     }
 

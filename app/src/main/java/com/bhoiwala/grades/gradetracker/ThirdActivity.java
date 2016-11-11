@@ -162,6 +162,7 @@ public class ThirdActivity extends AppCompatActivity {
                 }
             }
         }); // text watcher
+
     }
     public void populateMenuPopup(final String individualToChange, final String gradeReceivedToChange, final String maxPointsToChange) {
         String[] items = {"Edit", "Delete"};

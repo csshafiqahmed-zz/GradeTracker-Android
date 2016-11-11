@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:text="Name"
         android:textSize="28sp"
-        android:layout_weight="0.80"
+        android:layout_weight="0.90"
         android:textColor="@android:color/background_dark" />
 
     <TextView
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:text="Weight"
         android:textSize="28sp"
-        android:layout_weight="0.10"
+        android:layout_weight="0.05"
         android:textAlignment="center"
         android:textColor="@android:color/background_dark" />
 
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:text="Average"
         android:textSize="28sp"
-        android:layout_weight="0.10"
+        android:layout_weight="0.05"
         android:textAlignment="center"
         android:textColor="@android:color/background_dark" />
 

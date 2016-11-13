@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,29 +22,21 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.bhoiwala.grades.gradetracker.adapters.CategoryAdapter;
 import com.bhoiwala.grades.gradetracker.realm.Categories;
-import com.bhoiwala.grades.gradetracker.realm.Course;
 import com.bhoiwala.grades.gradetracker.realm.Individual;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 public class SecondActivity extends AppCompatActivity {
 
-
     public static String classChosen = "";
     final Context context = this;
-//    ArrayList<String> listOfCategories; // old
     ArrayList<Categories> listOfCategories;
-
     private Realm realm;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +46,7 @@ public class SecondActivity extends AppCompatActivity {
         classChosen = intent.getExtras().getString("course");
         ActionBar ab = getSupportActionBar();
         ab.setTitle(classChosen);
-//        ab.setSubtitle(classChosen);
         ab.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#005af7")));
-
         ab.setDisplayHomeAsUpEnabled(true);
         realm = Realm.getDefaultInstance();
         FloatingActionButton addCategoryButton = (FloatingActionButton) findViewById(R.id.floatingActionButton2);
@@ -71,38 +60,20 @@ public class SecondActivity extends AppCompatActivity {
                 final EditText categoryWeight = (EditText) promptsView.findViewById(R.id.enteredWeight);
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                 alertDialogBuilder.setView(promptsView);
-
                 Boolean editDB = false;
                 String categoryToEdit = "";
                 showPopupMenu(alertDialogBuilder, categoryName, categoryWeight, editDB, categoryToEdit);
             }});
-
-
-
-
-        refreshViews();
-
-    }
-
-    @Override
-    public void onResume()
-    {  // After a pause OR at startup
-        super.onResume();
-        //Refresh your stuff here
         refreshViews();
     }
 
     public void refreshViews() {
-
         RealmResults<Categories> categories = realm.where(Categories.class).equalTo("categoryClass", classChosen).findAll();
         calculateAverages(categories);
-//        listOfCategories = new ArrayList<String>(); // old
         listOfCategories = new ArrayList<>();
         for (Categories category: categories){
-//            listOfCategories.add(category.categoryName); // old
             listOfCategories.add(category);
         }
-//        ArrayAdapter<String> listAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfCategories); // old
         CategoryAdapter listAdapter2 = new CategoryAdapter(this, listOfCategories);
         final ListView listView = (ListView) findViewById(R.id.categoryList);
         listView.setAdapter(listAdapter2);
@@ -115,7 +86,6 @@ public class SecondActivity extends AppCompatActivity {
                 Intent intent = new Intent(SecondActivity.this, ThirdActivity.class);
                 intent.putExtra("category", categoryChosen);
                 startActivity(intent);
-//                Toast.makeText(getApplicationContext(), "You chose: " + categoryChosen, Toast.LENGTH_SHORT).show();
             }
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -163,7 +133,6 @@ public class SecondActivity extends AppCompatActivity {
         if(!editDB) {
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
         }
-        // add TextWatcher for EditText
         final Boolean[] goodToGo = {editDB};
         final Boolean[] goodToGo2 = {editDB};
         categoryName.addTextChangedListener(new TextWatcher() {
@@ -178,7 +147,7 @@ public class SecondActivity extends AppCompatActivity {
                 if(categoryName.getText().toString().equals(categoryToEdit)){
                     exists = false;
                 }
-                if (s.length() >= 1 && !exists) { // add your condition here, in your case it is checkIfNameAlreadyExists
+                if (s.length() >= 1 && !exists) {
                     goodToGo[0] = true;
                 } else {
                     if(exists){toast("Category already exists");}
@@ -191,7 +160,6 @@ public class SecondActivity extends AppCompatActivity {
                 }
             }
         }); // text watcher
-//        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
         categoryWeight.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -199,7 +167,6 @@ public class SecondActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
-                // add your condition here, in your case it is checkIfNameAlreadyExists
                 if(editDB) s = categoryWeight.getText();
                 goodToGo2[0] = s.length() >= 1;
                 if(goodToGo[0] && goodToGo2[0]){
@@ -245,8 +212,6 @@ public class SecondActivity extends AppCompatActivity {
         categoryWeight.setText(weightToEdit);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setView(promptsView);
-//        final AlertDialog alertDialog = alertDialogBuilder.create();
-//        alertDialog.show();
         Boolean editDB = true;
         showPopupMenu(alertDialogBuilder, categoryName, categoryWeight, editDB, categoryToEdit);
     }
@@ -256,7 +221,6 @@ public class SecondActivity extends AppCompatActivity {
         for (Categories category : categories){
             if(category.categoryName.equals(currentCategory)){
                 String parent = category.categoryClass + " / " + category.categoryName;
-//                String oldParent = courseToEdit + " / " + oldCategory.categoryName;
                 realm.beginTransaction();
                 category.categoryName = newCategoryName;
                 category.categoryWeight = newWeight;
@@ -274,17 +238,14 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     public void deleteCategoryinDB(String categoryName){
-
         RealmResults<Categories> categories = realm.where(Categories.class).equalTo("categoryClass", classChosen).equalTo("categoryName", categoryName).findAll();
         for( Categories category : categories){
             String parent = category.categoryClass + " / " + categoryName;
             RealmResults<Individual> individuals = realm.where(Individual.class).equalTo("parent", parent).findAll();
-            Log.v("Individual - ", individuals.toString());
             realm.beginTransaction();
             individuals.deleteAllFromRealm();
             realm.commitTransaction();
         }
-        Log.v("Categories - ", categories.toString());
         realm.beginTransaction();
         categories.deleteAllFromRealm();
         realm.commitTransaction();
@@ -294,14 +255,12 @@ public class SecondActivity extends AppCompatActivity {
 
 
     public void calculateAverages(RealmResults<Categories> categories) {
-//        RealmResults<Categories> categories = realm.where(Categories.class).equalTo("categoryClass", classChosen).findAll();
         for (Categories category: categories){
             Log.d("categories: ", String.valueOf(categories));
             Log.d("category name: ", category.categoryName);
             String parent = classChosen + " / " + category.categoryName;
             RealmResults<Individual> individuals = realm.where(Individual.class).equalTo("parent", parent).findAll();
             Log.d("individuals: ", String.valueOf(individuals));
-
             float sum = (float) 0.0;
             for (Individual individual: individuals){
                 sum += (Float.parseFloat(individual.gradeReceived) / Float.parseFloat(individual.maxGradePossible));
@@ -316,7 +275,6 @@ public class SecondActivity extends AppCompatActivity {
         }
     }
     public Boolean checkIfExists(String categoryName){
-//        String categoryCheck = classChosen + " / " + categoryName;
         RealmQuery<Categories> category = realm.where(Categories.class).equalTo("categoryClass", classChosen).equalTo("categoryName", categoryName);
         return category.count() != 0;
     }
@@ -349,6 +307,7 @@ public class SecondActivity extends AppCompatActivity {
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
+
     public void forceCloseKeyboard(EditText editText){
         final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
@@ -364,7 +323,17 @@ public class SecondActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     public void toast(String message){
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        //Refresh your stuff here
+        refreshViews();
+    }
+
 }

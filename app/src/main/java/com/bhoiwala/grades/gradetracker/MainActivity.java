@@ -19,28 +19,21 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.bhoiwala.grades.gradetracker.adapters.CourseAdapter;
 import com.bhoiwala.grades.gradetracker.realm.Categories;
 import com.bhoiwala.grades.gradetracker.realm.Course;
 import com.bhoiwala.grades.gradetracker.realm.Individual;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
-//import com.bhoiwala.grades.gradetracker.sqlite.CourseDBOpenHelper;
 
 public class MainActivity extends AppCompatActivity {
 
     final Context context = this;
-
-    //    ArrayList<String> listOfClasses; // old
     ArrayList<Course> listOfClasses;
-
     private Realm realm;
 
     @Override
@@ -53,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         Realm.init(this);
         realm = Realm.getDefaultInstance();
         FloatingActionButton addClassButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
-        final ListView listView = (ListView) findViewById(R.id.classList);
 
         assert addClassButton != null;
         addClassButton.setOnClickListener(new View.OnClickListener() {
@@ -67,47 +59,9 @@ public class MainActivity extends AppCompatActivity {
                 Boolean editDB = false;
                 String courseToEdit = "";
                 showPopupMenu(alertDialogBuilder, className, editDB, courseToEdit);
-//                alertDialogBuilder.setCancelable(false)
-//                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                String input = className.getText().toString();
-//                                saveClassName(input);
-//                                forceCloseKeyboard(className);
-//                                Toast.makeText(getApplicationContext(), "You entered: " + input, Toast.LENGTH_SHORT).show();
-//                            }
-//                        })
-//                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                forceCloseKeyboard(className);
-//                                dialog.cancel();
-//                            }
-//                        });
-//
-//                final AlertDialog alertDialog = alertDialogBuilder.create();
-//                alertDialog.show();
-//                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-//                // add TextWatcher for EditText
-//                className.addTextChangedListener(new TextWatcher() {
-//                    @Override
-//                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-//                    @Override
-//                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
-//                    @Override
-//                    public void afterTextChanged(Editable s) {
-//                        Boolean exists = checkIfExists(s.toString());
-//                        if (s.length() >= 1 && !exists) { // add your condition here, in your case it is checkIfNameAlreadyExists
-//                            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
-//                        } else {
-//                            if(exists){Toast.makeText(getApplicationContext(), "Class already exists", Toast.LENGTH_SHORT).show();}
-//                            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-//                        }
-//                    }
-//                }); // text watcher
             }
-        }); // on click listener
+        }); // ~ on click listener
         refreshViews();
-
-
     } // ends onCreate
 
     public void showPopupMenu(AlertDialog.Builder alertDialogBuilder, final EditText className, final Boolean editDB, final String courseToEdit) {
@@ -125,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
                             toast("Course updated");
                         }
                         forceCloseKeyboard(className);
-//                        toast("You entered: " + input);
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -138,20 +91,15 @@ public class MainActivity extends AppCompatActivity {
         final AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-        // add TextWatcher for EditText
         className.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
                 Boolean exists = checkIfExists(s.toString());
-                if (s.length() >= 1 && !exists) { // add your condition here, in your case it is checkIfNameAlreadyExists
+                if (s.length() >= 1 && !exists) {
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
                 } else {
                     if (exists) {
@@ -163,36 +111,22 @@ public class MainActivity extends AppCompatActivity {
         }); // text watcher
     }
 
-
-    //   @Override
-    public void onResume() {  // After a pause OR at startup
-        super.onResume();
-        //Refresh your stuff here
-        refreshViews();
-    }
-
     public void refreshViews() {
         RealmResults<Course> courses = realm.where(Course.class).findAll();
         calculateFinalClassGrade(courses);
-//        listOfClasses = new ArrayList<String>(); // old
         listOfClasses = new ArrayList<>();
 
         for (Course course : courses) {
-//            listOfClasses.add(course.className); // old
             listOfClasses.add(course);
         }
-//        listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfClasses); // old
         CourseAdapter listAdapter = new CourseAdapter(this, listOfClasses);
         final ListView listView = (ListView) findViewById(R.id.classList);
         listView.setAdapter(listAdapter);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Course listItem = (Course) listView.getItemAtPosition(i);
                 String classChosen = listItem.className;
-//                toast("You chose: " + classChosen);
-
                 Intent intent = new Intent(MainActivity.this, SecondActivity.class);
                 intent.putExtra("course", classChosen);
                 startActivity(intent);
@@ -207,8 +141,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
     }
 
     public void calculateFinalClassGrade(RealmResults<Course> courses) {
@@ -226,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     public void populateMenuPopup(final String classToChange) {
         String[] items = {"Edit", "Delete"};
         ArrayAdapter<String> menuItems = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
@@ -242,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String menuChosen = (String) menuList.getItemAtPosition(i);
-//                toast(menuChosen);
                 if(menuChosen.equals("Edit")){
                     editCourse(classToChange);
                 }else{
@@ -251,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
                 alertDialog.dismiss();
             }
         });
-
     }
 
     public void editCourse(String courseToEdit) {
@@ -261,15 +190,11 @@ public class MainActivity extends AppCompatActivity {
         courseName.setText(courseToEdit);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setView(promptsView);
-//        final AlertDialog alertDialog = alertDialogBuilder.create();
-//        alertDialog.show();
         Boolean editDB = true;
         showPopupMenu(alertDialogBuilder, courseName, editDB, courseToEdit);
-
     }
 
     public void editCourseinDB(final String newClassName, final String courseToEdit){
-//        toast("I will change to " + newClassName);
         Course courseWithOldName = realm.where(Course.class).equalTo("className", courseToEdit).findFirst();
         realm.beginTransaction();
         courseWithOldName.className = newClassName;
@@ -290,7 +215,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-
         refreshViews();
     }
 
@@ -319,26 +243,10 @@ public class MainActivity extends AppCompatActivity {
         refreshViews();
     }
 
-
-
-
-
     public Boolean checkIfExists(String className) {
         RealmQuery<Course> courses = realm.where(Course.class).equalTo("className", className);
         return courses.count() != 0;
     }
-
-
-//    public Course getCourseObject(String courseName){
-//        RealmResults<Course> courses = realm.where(Course.class).findAll();
-//        listOfClasses = new ArrayList<String>();
-//        for (Course course: courses){
-//            if (course.className.equals(courseName)){
-//                return course;
-//            }
-//        }
-//        return null;
-//    }
 
     public void saveClassName(final String className) {
         realm.executeTransactionAsync(new Realm.Transaction() {
@@ -374,6 +282,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void toast(String message){
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void onResume() {  // After a pause OR at startup
+        super.onResume();
+        refreshViews();
     }
 
 } // ends MainActivity

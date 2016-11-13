@@ -5,19 +5,23 @@
 
     <TextView
         android:id="@+id/tvName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="45sp"
+        android:gravity="center_vertical"
         android:text="Name"
-        android:textSize="28sp"
-        android:layout_weight="0.99"
+        android:textSize="25sp"
+        android:layout_weight="0.70"
         android:textColor="@android:color/background_dark" />
 
     <TextView
         android:id="@+id/tvGrade"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="45sp"
+        android:gravity="center_vertical"
         android:text="Grade"
-        android:textSize="28sp"
+        android:textSize="25sp"
+        android:layout_weight="0.30"
+        android:textAlignment="textEnd"
         android:textColor="@android:color/background_dark" />
 
 </LinearLayout>

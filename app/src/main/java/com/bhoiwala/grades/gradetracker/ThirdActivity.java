@@ -22,13 +22,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import com.bhoiwala.grades.gradetracker.adapters.IndividualAdapter;
-import com.bhoiwala.grades.gradetracker.realm.Categories;
 import com.bhoiwala.grades.gradetracker.realm.Individual;
-
 import java.util.ArrayList;
-
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -37,8 +33,6 @@ public class ThirdActivity extends AppCompatActivity {
     public static String categoryChosen = "";
     final Context context = this;
     ArrayList<Individual> listOfIndividuals;
-//    ArrayList<String> listOfIndividuals; // old
-
     private Realm realm;
 
     @Override
@@ -71,7 +65,6 @@ public class ThirdActivity extends AppCompatActivity {
                 Boolean editDB = false;
                 String individualNameToEdit = "";
                 showPopupMenu(alertDialogBuilder,individualName,gradeReceived,maxPoints, editDB, individualNameToEdit);
-
             }});
 
         refreshViews();
@@ -94,7 +87,6 @@ public class ThirdActivity extends AppCompatActivity {
                             toast("Assignment updated");
                         }
                         forceCloseKeyboard(individualName);
-//                        Toast.makeText(getApplicationContext(), "You entered: " + name, Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -119,7 +111,6 @@ public class ThirdActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
-                // add your condition here, in your case it is checkIfNameAlreadyExists
                 goodToGo[0] = s.length() >= 1;
                 if(goodToGo[0] && goodToGo2[0] && goodToGo3[0]){
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
@@ -127,8 +118,7 @@ public class ThirdActivity extends AppCompatActivity {
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                 }
             }
-        }); // text watcher
-//        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        });
         gradeReceived.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -136,7 +126,6 @@ public class ThirdActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
-                // add your condition here, in your case it is checkIfNameAlreadyExists
                 goodToGo2[0] = s.length() >= 1;
                 if(goodToGo[0] && goodToGo2[0] && goodToGo3[0]){
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
@@ -144,8 +133,7 @@ public class ThirdActivity extends AppCompatActivity {
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                 }
             }
-        }); // text watcher
-//        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+        });
         maxPoints.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -153,7 +141,6 @@ public class ThirdActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
-                // add your condition here, in your case it is checkIfNameAlreadyExists
                 goodToGo3[0] = s.length() >= 1;
                 if(goodToGo[0] && goodToGo2[0] && goodToGo3[0]){
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
@@ -161,7 +148,7 @@ public class ThirdActivity extends AppCompatActivity {
                     alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                 }
             }
-        }); // text watcher
+        });
 
     }
     public void populateMenuPopup(final String individualToChange, final String gradeReceivedToChange, final String maxPointsToChange) {
@@ -228,34 +215,19 @@ public class ThirdActivity extends AppCompatActivity {
         refreshViews();
     }
 
-
     public void refreshViews() {
         RealmResults<Individual> individuals = realm.where(Individual.class).equalTo("parent", categoryChosen).findAll();
-//        listOfIndividuals = new ArrayList<String>(); // old
-         listOfIndividuals = new ArrayList<>();
+        listOfIndividuals = new ArrayList<>();
         for (Individual individual: individuals){
-//            listOfIndividuals.add(individual.individualCategoryName); // old
             listOfIndividuals.add(individual);
         }
-//        listAdapter3 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listOfIndividuals); // old
         IndividualAdapter individualAdapter = new IndividualAdapter(this, listOfIndividuals);
         final ListView listView = (ListView) findViewById(R.id.individualList);
-//        listView.setAdapter(listAdapter3); // old
         listView.setAdapter(individualAdapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Individual listItem = (Individual) listView.getItemAtPosition(i);
-                String individualChosen = listItem.individualCategoryName;
-//                Toast.makeText(getApplicationContext(), "You chose: " + individualChosen, Toast.LENGTH_SHORT).show();
-
-            }
-        });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-               Individual listItem = (Individual) listView.getItemAtPosition(i);
+                Individual listItem = (Individual) listView.getItemAtPosition(i);
                 String individualToChange = listItem.individualCategoryName;
                 String gradeReceivedToChange = listItem.gradeReceived;
                 String maxPointsToChange = listItem.maxGradePossible;
@@ -301,7 +273,6 @@ public class ThirdActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 this.finish();
                 return true;

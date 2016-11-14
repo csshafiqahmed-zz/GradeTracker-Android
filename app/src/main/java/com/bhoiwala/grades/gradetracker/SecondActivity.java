@@ -98,6 +98,7 @@ public class SecondActivity extends AppCompatActivity {
                 return true;
             }
         });
+        Log.v("**** REFRESHED 2", " successfully **** ");
     }
 
     public void showPopupMenu(AlertDialog.Builder alertDialogBuilder, final EditText categoryName, final EditText categoryWeight, final Boolean editDB, final String categoryToEdit){
@@ -142,7 +143,6 @@ public class SecondActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
             @Override
             public void afterTextChanged(Editable s) {
-                Log.v("AFTER categoryName - ", s.toString());
                 Boolean exists = checkIfExists(s.toString());
                 if(categoryName.getText().toString().equals(categoryToEdit)){
                     exists = false;
@@ -256,19 +256,20 @@ public class SecondActivity extends AppCompatActivity {
 
     public void calculateAverages(RealmResults<Categories> categories) {
         for (Categories category: categories){
-            Log.d("categories: ", String.valueOf(categories));
-            Log.d("category name: ", category.categoryName);
+//            Log.d("categories: ", String.valueOf(categories));
+//            Log.d("category name: ", category.categoryName);
             String parent = classChosen + " / " + category.categoryName;
             RealmResults<Individual> individuals = realm.where(Individual.class).equalTo("parent", parent).findAll();
-            Log.d("individuals: ", String.valueOf(individuals));
+//            Log.d("individuals: ", String.valueOf(individuals));
             float sum = (float) 0.0;
             for (Individual individual: individuals){
                 sum += (Float.parseFloat(individual.gradeReceived) / Float.parseFloat(individual.maxGradePossible));
             }
+//            Log.d("SUM " + category.categoryName, String.valueOf(sum));
             float weight = (Float.parseFloat(category.categoryWeight));
             float average = (sum/individuals.size()) * weight;
             DecimalFormat df = new DecimalFormat("#.00");
-            Categories updateCategory = realm.where(Categories.class).equalTo("categoryName", category.categoryName).findFirst();
+            Categories updateCategory = realm.where(Categories.class).equalTo("categoryClass", category.categoryClass).equalTo("categoryName", category.categoryName).findFirst();
             realm.beginTransaction();
             updateCategory.categoryAverage = String.valueOf(df.format(average));
             realm.commitTransaction();
@@ -291,13 +292,13 @@ public class SecondActivity extends AppCompatActivity {
         }, new Realm.Transaction.OnSuccess() {
             @Override
             public void onSuccess() {
-                Log.v("Database 2", "Stored ok");
+                Log.v("**** DATABASE 2 - ", usercategoryName + " - " + categoryWeight + " saved ****");
                 refreshViews();
             }
         }, new Realm.Transaction.OnError() {
             @Override
             public void onError(Throwable error) {
-                Log.v("Error", error.getMessage());
+                Log.v("**** ERROR 2 - ", error.getMessage());
             }
         });
 
@@ -334,6 +335,7 @@ public class SecondActivity extends AppCompatActivity {
         super.onResume();
         //Refresh your stuff here
         refreshViews();
+        Log.v("***** ON RESUME", classChosen + " *****");
     }
 
 }

@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void refreshViews() {
+        printRealmTables();
         RealmResults<Course> courses = realm.where(Course.class).findAll();
         calculateFinalClassGrade(courses);
         listOfClasses = new ArrayList<>();
@@ -141,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        Log.v("**** REFRESHED 1", " successfully **** ");
     }
 
     public void calculateFinalClassGrade(RealmResults<Course> courses) {
@@ -148,7 +150,11 @@ public class MainActivity extends AppCompatActivity {
             RealmResults<Categories> categories = realm.where(Categories.class).equalTo("categoryClass", course.className).findAll();
             float sum = (float) 0.0;
             for (Categories category : categories) {
-                sum += (Float.parseFloat(category.categoryAverage));
+                try {
+                    sum += (Float.parseFloat(category.categoryAverage));
+                }catch (NullPointerException e){
+                    sum = 999;  // means that something is wrong
+                }
             }
             DecimalFormat df = new DecimalFormat("0.00");
             Course updateCourse = realm.where(Course.class).equalTo("className", course.className).findFirst();
@@ -225,17 +231,17 @@ public class MainActivity extends AppCompatActivity {
             for( Categories category : categories){
                 String parent = category.categoryClass + " / " + category.categoryName;
                 RealmResults<Individual> individuals = realm.where(Individual.class).equalTo("parent", parent).findAll();
-                Log.v("Individual - ", individuals.toString());
+//                Log.v("Individual - ", individuals.toString());
                 realm.beginTransaction();
                 individuals.deleteAllFromRealm();
                 realm.commitTransaction();
             }
-            Log.v("Categories - ", categories.toString());
+//            Log.v("Categories - ", categories.toString());
             realm.beginTransaction();
             categories.deleteAllFromRealm();
             realm.commitTransaction();
         }
-        Log.v("Courses - ", courses.toString());
+//        Log.v("Courses - ", courses.toString());
         realm.beginTransaction();
         courses.deleteAllFromRealm();
         realm.commitTransaction();
@@ -258,13 +264,13 @@ public class MainActivity extends AppCompatActivity {
         }, new Realm.Transaction.OnSuccess() {
             @Override
             public void onSuccess() {
-                Log.v("Database", "Stored ok");
+                Log.v("**** DATABASE 1 - ", className + " saved ****");
                 refreshViews();
             }
         }, new Realm.Transaction.OnError() {
             @Override
             public void onError(Throwable error) {
-                Log.v("Error", error.getMessage());
+                Log.v("**** ERROR 1 - ", error.getMessage());
             }
         });
 
@@ -287,6 +293,21 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {  // After a pause OR at startup
         super.onResume();
         refreshViews();
+    }
+
+    public void printRealmTables() {
+        RealmResults<Course> courses = realm.where(Course.class).findAll();
+        for(Course course : courses){
+            Log.v("---- COURSE ", course.className + " - " + course.finalGrade + " ----");
+        }
+        RealmResults<Categories> categories = realm.where(Categories.class).findAll();
+        for(Categories category : categories){
+            Log.v("---- CATEGORY ", category.categoryClass + " - " + category.categoryName + " - " + category.categoryWeight + " - " + category.categoryAverage + " ----" );
+        }
+        RealmResults<Individual> individuals = realm.where(Individual.class).findAll();
+        for(Individual individual : individuals){
+            Log.v("---- INDIVIDUAL ", individual.parent + " - " + individual.individualCategoryName + " - " + individual.gradeReceived + "/" + individual.maxGradePossible);
+        }
     }
 
 } // ends MainActivity

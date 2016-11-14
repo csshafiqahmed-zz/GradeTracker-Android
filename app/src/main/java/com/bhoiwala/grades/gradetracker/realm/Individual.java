@@ -7,5 +7,4 @@ public class Individual extends RealmObject{
     public String parent;
     public String gradeReceived;
     public String maxGradePossible;
-
 }

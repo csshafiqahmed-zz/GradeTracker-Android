@@ -235,6 +235,7 @@ public class ThirdActivity extends AppCompatActivity {
                 return true;
             }
         });
+        Log.v("**** REFRESHED 3", " successfully **** ");
     }
 
     public void saveIndividualName(final String individualName, final String grade, final String totalPossible){
@@ -250,13 +251,13 @@ public class ThirdActivity extends AppCompatActivity {
         }, new Realm.Transaction.OnSuccess() {
             @Override
             public void onSuccess() {
-                Log.v("Database 3", "Stored ok");
+                Log.v("**** DATABASE 3 - ", individualName + "-" + grade + "/" + totalPossible + " saved ****");
                 refreshViews();
             }
         }, new Realm.Transaction.OnError() {
             @Override
             public void onError(Throwable error) {
-                Log.v("Error", error.getMessage());
+                Log.v("**** ERROR 3 - ", error.getMessage());
             }
         });
 

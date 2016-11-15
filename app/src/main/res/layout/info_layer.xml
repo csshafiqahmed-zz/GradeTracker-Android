@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:text="About this app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/titleTv"
+        android:textSize="20sp"
+        android:layout_marginTop="5sp"
+        android:textAlignment="center"
+        android:textStyle="normal|bold" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/aboutTv"
+        android:layout_weight="0.10"
+        android:padding="10sp"
+        android:textSize="16sp" />
+
+    <TextView
+        android:text="How to Use"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/howToUseTitleTv"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textStyle="normal|bold" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/howToUseTv"
+        android:layout_weight="0.22"
+        android:padding="10sp"
+        android:textSize="16sp" />
+
+</LinearLayout>

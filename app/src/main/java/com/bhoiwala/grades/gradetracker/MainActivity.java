@@ -3,6 +3,7 @@ package com.bhoiwala.grades.gradetracker;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +13,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -290,11 +294,6 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    public void onResume() {  // After a pause OR at startup
-        super.onResume();
-        refreshViews();
-    }
-
     public void printRealmTables() {
         RealmResults<Course> courses = realm.where(Course.class).findAll();
         for(Course course : courses){
@@ -308,6 +307,41 @@ public class MainActivity extends AppCompatActivity {
         for(Individual individual : individuals){
             Log.v("---- INDIVIDUAL ", individual.parent + " - " + individual.individualCategoryName + " - " + individual.gradeReceived + "/" + individual.maxGradePossible);
         }
+    }
+
+    public void onResume() {  // After a pause OR at startup
+        super.onResume();
+        refreshViews();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.info:
+                Intent info = new Intent(MainActivity.this, InfoActivity.class);
+                startActivity(info);
+                return true;
+            case R.id.rate:
+                Intent rate = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.bhoiwala.grades.gradetracker"));
+                startActivity(rate);
+                return true;
+            case R.id.share:
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_SUBJECT, "Grade Tracker");
+                String sAux = "\nHey, check out Grade Tracker. This android app helps you calculate/predict your final grades " +
+                        "by keeping track of all your assignments.\n\n";
+                sAux = sAux + "https://play.google.com/store/apps/details?id=com.bhoiwala.grades.gradetracker \n\n";
+                i.putExtra(Intent.EXTRA_TEXT, sAux);
+                startActivity(Intent.createChooser(i, "Share via"));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 } // ends MainActivity

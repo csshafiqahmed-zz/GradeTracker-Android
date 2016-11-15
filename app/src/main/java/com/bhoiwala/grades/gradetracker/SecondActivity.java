@@ -275,6 +275,7 @@ public class SecondActivity extends AppCompatActivity {
             realm.commitTransaction();
         }
     }
+
     public Boolean checkIfExists(String categoryName){
         RealmQuery<Categories> category = realm.where(Categories.class).equalTo("categoryClass", classChosen).equalTo("categoryName", categoryName);
         return category.count() != 0;

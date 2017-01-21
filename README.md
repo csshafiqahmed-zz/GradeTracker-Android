@@ -10,8 +10,15 @@ How to use:
 - Almost done! All you have to do now, is add your grades. You willsss see your calculated final grade for that course on the main page.
 
 Screenshots:
-![screenshot-main-page]
 
+![screenshot-main-page]
 (https://lh3.googleusercontent.com/OFdTW4XKPVrC8g78knTD-JF-FICxIoCHjDWbh1sjpjlfVDwO4v7TtdkKGs4Quh52lPbl=h900-rw)
 
+
+![screenshot-second-page]
+(https://lh3.googleusercontent.com/dhH1vknjTpI1VNnrcBjYhl2S1Ezuq89p0iKw6Y6ksBo8qx5ylqgtlzL8hQ87-G4lDRY=h900-rw)
+
+
+![screenshot-third-page]
+(https://lh3.googleusercontent.com/9-NXAgdT0bVJYEwH_JFGxQ0V9OGQ3lsDwO1qVoDFr2KW7zMEXghQo1T8H7GAhMSIHdH5=h900-rw)
 
